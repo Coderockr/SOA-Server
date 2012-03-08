@@ -53,4 +53,3 @@ TODO
  Estudar a necessidade de criar um arquivo .ini para configurar os serviços das entities
  Escrever testes com phpunit 
  Testar Travis CI
- Add a to-do
