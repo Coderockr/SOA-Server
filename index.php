@@ -149,17 +149,15 @@ $app->error(function (\Exception $e, $code) {
     return new Response($message, $code);
 } });
 
-//$app['api_user'] == 'elton';
-//$app['api_pwd']  == 'elton';
-
 $app->before(function (Request $request) use ($app) {
-    //echo '<pre>'; var_dump($request->headers->has('authorization'));exit;
-    /*$user = $request->server->get('PHP_AUTH_USER');
-    $pwd  = $request->server->get('PHP_AUTH_PW');
-
-    if( $app['api_user'] !== $user || $app['api_pwd'] !== $pwd){
+    if( ! $request->headers->has('authorization')){
         return new Response('Unauthorized', 403);
-    } */
+    }
+
+    require_once __DIR__.'/configs/clients.php';
+    if (!in_array($request->headers->get('authorization'), array_keys($clients))) {
+        return new Response('Unauthorized', 403);
+    }
 });
 
 $app->after(function (Request $request, Response $response) {

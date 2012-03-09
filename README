@@ -32,6 +32,7 @@ CREATE TABLE `users` (
         RewriteEngine On
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteRule !\.(js|ico|gif|jpg|png|css|htm|html|txt|mp3)$ index.php
+        RewriteRule .? - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     </Directory>
 </VirtualHost>
 
@@ -48,7 +49,7 @@ TODO
 
  Implementar DMS/Filter nas entities - Done
  Pensar em melhor forma de serializar as entidades
- Implementar authenticação
+ Implementar authenticação - Done
  Estruturar os namespaces da pasta Model
  Estudar a necessidade de criar um arquivo .ini para configurar os serviços das entities
  Escrever testes com phpunit 
