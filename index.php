@@ -19,6 +19,7 @@ $loader->registerNamespaces(array(
     'Doctrine\\DBAL\\Migrations' => __DIR__.'/vendor/doctrine/dbal/lib',
     'Doctrine\\DBAL'             => __DIR__.'/vendor/doctrine/dbal/lib',
     'Doctrine'                   => __DIR__.'/vendor/doctrine/orm/lib',
+    'DMS'                => __DIR__.'/vendor',
     'model'                      => __DIR__
 ));
 
@@ -26,7 +27,8 @@ $loader->register();
 
 
 $app = new Silex\Application();
-require_once 'doctrine.php';
+require_once __DIR__.'/library/doctrine.php';
+require_once __DIR__.'/library/filter.php';
 
 
 //app configuration
@@ -71,7 +73,7 @@ $app->get('/{entity}/{id}.{format}', function ($entity, $id, $format) use ($app,
 ->assert('format', 'xml|json');
 
 
-$app->post('/{entity}', function ($entity, Request $request) use ($app, $em) {
+$app->post('/{entity}', function ($entity, Request $request) use ($app, $em, $filter) {
     // Get POST data or 400 HTTP response
     if (!$data = $request->get($entity)) {
         return new Response('Missing parameters.', 400);
@@ -82,9 +84,14 @@ $app->post('/{entity}', function ($entity, Request $request) use ($app, $em) {
     $entity = new $entityName;
     $entity->set($data);
 
+    //valid entity
     if (count($app['validator']->validate($entity)) > 0) {
         $app->abort(400, 'Invalid parameters.');
     }
+
+    //Filter entity
+    $filter->filterEntity($entity);
+
 
     $em->persist($entity);
     $em->flush();

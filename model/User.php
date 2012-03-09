@@ -4,6 +4,7 @@ namespace model;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints;
+use DMS\Filter\Rules as Filter;
 
 /**
  * @ORM\Entity
@@ -23,7 +24,9 @@ class User extends Entity
     /**
      * @ORM\Column(type="string", length=255)
      *
-     *
+     * @Filter\StripTags()
+     * @Filter\Trim()
+     * @Filter\StripNewlines()
      * @var string
      */
     private $login;
@@ -31,6 +34,9 @@ class User extends Entity
     /**
      * @ORM\Column(type="string", length=255)
      *
+     * @Filter\StripTags()
+     * @Filter\Trim()
+     * @Filter\StripNewlines()
      * @var string
      */
     private $password;
