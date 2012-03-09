@@ -96,39 +96,41 @@ $app->post('/{entity}', function ($entity, Request $request) use ($app, $em, $fi
     $em->persist($entity);
     $em->flush();
 
-    return $app->redirect('/user/'. $entity->getId(). '.json', 201);
+    return new Response($entity->toJson());
 });
 
-//@todo - terminar e testar. Criar método get no entity?
-$app->put('/{entity}/{id}', function ($entity, $id) use ($app) {
+$app->put('/{entity}/{id}', function ($entity, $id, Request $request) use ($app, $em, $filter) {
     
     if (!$data = $request->get($entity)) {
         return new Response('Missing parameters.', 400);
     }
 
-    if (!$user = $app['event_manager']->find($id)) {
-        return new Response('User not found.', 404);
+    if (!$entity = $em->find('model\\'.ucfirst($entity), $id)) {
+        return new Response('Not found.', 404);
     }
-    $user->login = $data['login'];
-    $user->password = $data['password'];
 
-    if (count($app['validator']->validate($event)) > 0) {
+    $entity->set($data);
+
+    if (count($app['validator']->validate($entity)) > 0) {
         $app->abort(400, 'Invalid parameters.');
     }
 
-    $user->save();
+    //Filter entity
+    $filter->filterEntity($entity);
 
-    return new Response('Data updated.', 200);
+    $em->persist($entity);
+    $em->flush();
 
+    return new Response($entity->toJson(), 200);
 });
 
-//@todo: testar
-$app->delete('/{entity}/{id}', function ($entity, $id) use ($app) {
-    $entity = $app['event_manager']->find($id);
-    if (!$entity) {
+
+$app->delete('/{entity}/{id}', function ($entity, $id) use ($app, $em) {
+    if (!$entity = $em->find('model\\'.ucfirst($entity), $id)) {
         return new Response('Data not found.', 404);
     }
-    $entity->delete();
+    $em->remove($entity);
+    $em->flush();
     return new Response('Data deleted.', 200);
 });
 
@@ -146,6 +148,19 @@ $app->error(function (\Exception $e, $code) {
             $message = 'Internal Server Error.';
     return new Response($message, $code);
 } });
+
+//$app['api_user'] == 'elton';
+//$app['api_pwd']  == 'elton';
+
+$app->before(function (Request $request) use ($app) {
+    //echo '<pre>'; var_dump($request->headers->has('authorization'));exit;
+    /*$user = $request->server->get('PHP_AUTH_USER');
+    $pwd  = $request->server->get('PHP_AUTH_PW');
+
+    if( $app['api_user'] !== $user || $app['api_pwd'] !== $pwd){
+        return new Response('Unauthorized', 403);
+    } */
+});
 
 $app->after(function (Request $request, Response $response) {
     // Get URI parameter to determine requested output format
