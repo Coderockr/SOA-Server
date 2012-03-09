@@ -1,7 +1,8 @@
 mkdir vendor
 cd vendor
 wget http://silex.sensiolabs.org/get/silex.phar
-git clone http://github.com/rdohms/DMS-Filter.git DMS-Filter
+mkdir -p DMS/Filter
+git clone http://github.com/rdohms/DMS-Filter.git DMS/Filter
 mkdir doctrine
 git clone http://github.com/doctrine/common.git doctrine/common
 git clone http://github.com/doctrine/dbal.git doctrine/dbal
