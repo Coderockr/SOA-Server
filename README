@@ -46,7 +46,7 @@ http://rest.local/teste - formulário para fazer um post e criar um user
 
 TODO
 
- Implementar DMS/Filter nas entities
+ Implementar DMS/Filter nas entities - Done
  Pensar em melhor forma de serializar as entidades
  Implementar authenticação
  Estruturar os namespaces da pasta Model
