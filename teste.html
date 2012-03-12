@@ -1,5 +1,103 @@
-<form method="post" action="http://rest.local/user">
+<html>
+<body>
+
+<h1>RPC</h1>
+
+<a href="#" onclick="executeRpc()">Execute Rpc</a>
+
+<h1>Rest - Users</h1>
+<div id="users"></div>
+
+<h1>Add user</h1>
+<form id="addUser">
     <input type="text" name="user[login]">
     <input type="text" name="user[password]">
-    <input type="submit">
+    <input type="submit" id="btAdduser" value="Adicionar">
 </form>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+    var apiKey = '85e4a615f62c711d3aac0e7def5b4903';
+
+    function showUsers() {
+        $("#users").empty();
+         $.ajax({
+            url: '/users',
+            cache: false,
+            type: 'GET',
+            headers: {
+                "Authorization": apiKey
+            },
+            success: function(data){
+              var list = $("#users").append('<ul></ul>').find('ul');
+                for (var i = 0; i < data.length; i++) {
+                    list.append('<li>'+data[i].id+' - '+data[i].login+' - <a href="#" onclick="deleteUser('+data[i].id+')">Delete</a> - <a href="#" onclick="updateUser('+data[i].id+')">Update</a></li>');  
+                }
+            }
+        });
+    }
+
+    function updateUser(id) {
+        console.log(id)
+    }
+
+    function deleteUser(id) {
+        $.ajax({
+            url: '/user/'+id,
+            type: 'DELETE',
+            headers: {
+                "Authorization": apiKey
+            },
+            statusCode: {
+                200: function() {
+                    showUsers();
+                },
+                404: function(data) {
+                    alert('Error deleting user');
+                }
+            }
+        });
+        return false;
+    }
+
+    $('#addUser').submit(function() {
+        data = ($(this).serializeArray());
+        $.ajax({
+            url: '/user',
+            data: data,
+            type: 'POST',
+            headers: {
+                "Authorization": apiKey
+            },
+            success: function(data){
+                showUsers();
+            },
+            error: function(data) {
+                alert('Error saving user - ' + data.responseText);
+                
+            }
+        });
+        return false;
+    });
+
+    function executeRpc() {
+        data = '{"parameters": {"login": "elton","password" : "minetto"}}';
+        $.ajax({
+            url: '/rpc/login',
+            data: data,
+            contentType: 'application/json',
+            type: 'POST',
+            headers: {
+                "Authorization": apiKey
+            },
+            success: function(data){
+                alert(data);
+            },
+            error: function(data) {
+                alert('Error executing rpc - ' + data.responseText);
+            }
+        });
+    }
+
+    $(document).ready(showUsers);
+</script>
