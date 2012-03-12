@@ -29,17 +29,13 @@ $loader->register();
 
 
 $app = new Silex\Application();
+require_once __DIR__.'/configs/configs.php';
 require_once __DIR__.'/library/doctrine.php';
 require_once __DIR__.'/library/filter.php';
 
 //app configuration
 $app->register(new DoctrineServiceProvider(), array(
-    'db.options'  => array(
-        'driver'  => 'pdo_mysql',
-        'host'    => 'localhost',
-        'user'    => 'root',
-        'dbname'  => 'rest',
-    ),
+    'db.options'  => $dbOptions,
     'db.dbal.class_path' => 'vendor/doctrine-dbal/lib',
     'db.common.class_path' => 'vendor/doctrine-common/lib',
 ));

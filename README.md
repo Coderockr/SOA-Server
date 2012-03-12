@@ -14,18 +14,19 @@ Essa aplicação tem os seguintes projetos como dependência:
 Instalação
 ----------
 
-1. Fazer o git clone do projeto
-2. Executar o vendors.sh (por enquanto só para Linux e Mac) para instalar as dependências
-3. Criar o dominio virtual do Apache
+- Fazer o git clone do projeto
+- Executar o vendors.sh (por enquanto só para Linux e Mac) para instalar as dependências
+- Criar o dominio virtual do Apache
 
-    <VirtualHost *:80>
+---
+	<VirtualHost *:80>
         DocumentRoot "/Users/eminetto/Documents/Projects/SOA-Server"
-        ServerName soa.local
-        <Directory "/Users/eminetto/Documents/Projects/SOA-Server">
-            Options Indexes Multiviews FollowSymLinks
-            AllowOverride All
-            Order allow,deny
-            Allow from all
+		ServerName soa.local
+		<Directory "/Users/eminetto/Documents/Projects/SOA-Server">
+			Options Indexes Multiviews FollowSymLinks
+			AllowOverride All
+			Order allow,deny
+			Allow from all
 
             <Limit GET HEAD POST PUT DELETE OPTIONS>
                     Order Allow,Deny
@@ -39,14 +40,15 @@ Instalação
         </Directory>
     </VirtualHost>
 
-4. Configurar o /etc/hosts:
-127.0.0.1   soa.local
+- Configurar o /etc/hosts:
+    
+    127.0.0.1   soa.local
 
 
 Rest
 ----
 
-Para que uma entidade seja disponível via RES é preciso criar uma sub classe de model\Entity. Como exemplo existe uma entidade User. Para usá-la é preciso criar a tabela:
+Para que uma entidade seja disponível via RES é preciso criar uma sub classe de model\Entity. Como exemplo existe uma entidade User. Para usá-la é preciso criar a tabela abaixo. As configurações de banco de dados estão no arquivo configs/configs.php
 
     CREATE TABLE `users` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -72,6 +74,6 @@ Como acessar
 
 Para acessar os exemplos:
 
-http://soa.local/user/1 - mostrar o user com id 1
-http://soa.local/users - mostrar todos os users
-http://soa.local/sample - exemplos
+	http://soa.local/user/1 - mostrar o user com id 1
+	http://soa.local/users - mostrar todos os users
+	http://soa.local/sample - exemplos
