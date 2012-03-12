@@ -1,8 +1,12 @@
-Servidor Rest da Coderockr
+Servidor SOA da Coderockr
+=========================
 
-A idéia é: criar as entidades no diretório model (a ser definida estrutura dos subdiretórios) e automaticamente estar disponivel via Rest
+A idéia é facilitar o acesso a entidades usando REST e scripts PHP usando RPC
 
-Para testar
+
+Instalação
+----------
+
 
 1 - rodar o vendors.sh
 2 - criar a tabela de exemplo:
@@ -16,9 +20,9 @@ CREATE TABLE `users` (
 3 - Criar o dominio virtual do Apache
 
 <VirtualHost *:80>
-    DocumentRoot "/Users/eminetto/Documents/Projects/RestServer"
-    ServerName rest.local
-    <Directory "/Users/eminetto/Documents/Projects/RestServer">
+    DocumentRoot "/Users/eminetto/Documents/Projects/SOA-Server"
+    ServerName soa.local
+    <Directory "/Users/eminetto/Documents/Projects/SOA-Server">
         Options Indexes Multiviews FollowSymLinks
         AllowOverride All
         Order allow,deny
@@ -28,29 +32,18 @@ CREATE TABLE `users` (
                 Order Allow,Deny
                 Allow from all
             </Limit>
-
+        
         RewriteEngine On
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteRule !\.(js|ico|gif|jpg|png|css|htm|html|txt|mp3)$ index.php
-        RewriteRule .? - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteRule .? - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     </Directory>
 </VirtualHost>
 
 4 - configurar o /etc/hosts:
-127.0.0.1   rest.local
+127.0.0.1   soa.local
 
 3 - acessar as urls:
-http://rest.local/user/1.json - mostrar o user com id 1
-http://rest.local/users.json - mostrar todos os users
-http://rest.local/teste - formulário para fazer um post e criar um user
-
-
-TODO
-
- Implementar DMS/Filter nas entities - Done
- Pensar em melhor forma de serializar as entidades
- Implementar authenticação - Done
- Estruturar os namespaces da pasta Model
- Estudar a necessidade de criar um arquivo .ini para configurar os serviços das entities
- Escrever testes com phpunit 
- Testar Travis CI
+http://soa.local/user/1 - mostrar o user com id 1
+http://soa.local/users - mostrar todos os users
+http://soa.local/sample - exemplos
