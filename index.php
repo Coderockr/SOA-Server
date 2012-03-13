@@ -159,12 +159,12 @@ $app->post('/rpc/{procedure}', function ($procedure, Request $request) use ($app
 
 $app->before(function (Request $request) use ($app) {
     if( ! $request->headers->has('authorization')){
-        return new Response('Unauthorized', 403);
+        return new Response('Unauthorized', 401);
     }
 
     require_once __DIR__.'/configs/clients.php';
     if (!in_array($request->headers->get('authorization'), array_keys($clients))) {
-        return new Response('Unauthorized', 403);
+        return new Response('Unauthorized', 401);
     }
 });
 
