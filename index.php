@@ -51,7 +51,7 @@ $app->get('/{entity}', function ($entity) use ($app)
     $query = "SELECT * FROM $entity";
     $data = $app['db']->fetchAll($query);
     if(count($data) == 0) {
-        $app->abort(404, 'Data not found');
+        return new Response('Data not found', 404, array('Content-Type' => 'text/json'));
     }
     return new Response(json_encode($data));
 
@@ -62,7 +62,7 @@ $app->get('/{entity}/{id}', function ($entity, $id) use ($em)
     $data = $em->find('model\\'.ucfirst($entity), $id);
     
     if($data === null) {
-       $app->abort(404, 'Data not found');
+       return new Response('Data not found', 404, array('Content-Type' => 'text/json'));
     }
 
     return new Response($data->toJson());
