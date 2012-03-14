@@ -1,9 +1,9 @@
-Servidor SOA da Coderockr
+Coderockr SOA Server
 =========================
 
-A idéia é facilitar o acesso a entidades usando REST e scripts PHP usando RPC
+The goal of this project is to enable easy access of entities using Rest and PHP scripts using RPC
 
-Essa aplicação tem os seguintes projetos como dependência:
+This application depends on these projects:
 
 - [Silex](http://silex.sensiolabs.org/)
 - [DMS/Filter](https://github.com/rdohms/DMS-Filter)
@@ -11,12 +11,12 @@ Essa aplicação tem os seguintes projetos como dependência:
 - [Symfony ClassLoader](https://github.com/symfony/ClassLoader)
 - [Symfony Validator](https://github.com/symfony/Validator.git)
 
-Instalação
+Instalation
 ----------
 
-- Fazer o git clone do projeto
-- Executar o vendors.sh (por enquanto só para Linux e Mac) para instalar as dependências
-- Criar o dominio virtual do Apache
+- Clone this project
+- Execute vendors.sh to install dependencies (Linux and Mac for now)
+- Create a virtual domain in Apache
 
 ---
 	<VirtualHost *:80>
@@ -40,7 +40,7 @@ Instalação
         </Directory>
     </VirtualHost>
 
-- Configurar o /etc/hosts:
+- Configure /etc/hosts:
     
     127.0.0.1   soa.local
 
@@ -48,7 +48,7 @@ Instalação
 Rest
 ----
 
-Para que uma entidade seja disponível via RES é preciso criar uma sub classe de model\Entity. Como exemplo existe uma entidade User. Para usá-la é preciso criar a tabela abaixo. As configurações de banco de dados estão no arquivo configs/configs.php
+To be avaiable as a Rest service an entity must extend the model\Entity class. As an exemple, there is an User entity in this repository. To use it you must create the table, as the SQL below. The database configuration is in configs/configs.php file.
 
     CREATE TABLE `users` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -60,20 +60,18 @@ Para que uma entidade seja disponível via RES é preciso criar uma sub classe d
 RPC
 ---
 
-Para que uma classe PHP seja disponibilizada via RPC é preciso criar uma sub classe de procedure\Procedure, como a Login.php que está no diretório procedure.
+To be avaiable as a Rpc service a class must extend procedure\Procedure class, as shown in the procedure\Login.php sample.
 
-
-Autorização
+Authorization
 -----------
 
-O serviço sempre vai esperar que exista um campo Authorization no header da requisição. O cabeçalho vai ser comparado com o arquivo configs/clients.php. No arquivo sample.html existem exemplos de como usar a autorização
+The service expects an value to Authorization in the request header. The Authorization header will be validated with configs/clients.php contents. 
 
-
-Como acessar
+How to access
 ------------
 
-Para acessar os exemplos:
+Urls:
 
-	http://soa.local/user/1 - mostrar o user com id 1
-	http://soa.local/users - mostrar todos os users
-	http://soa.local/sample - exemplos
+	http://soa.local/user/1 - show user with id = 1
+	http://soa.local/users - show all users
+	http://soa.local/sample - the sample.html file shows how to use the services using Javascript
