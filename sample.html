@@ -16,87 +16,54 @@
 </form>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="/public/scripts/RestClient.js"></script>
+<script type="text/javascript" src="/public/scripts/RpcClient.js"></script>
 <script type="text/javascript">
     var apiKey = '85e4a615f62c711d3aac0e7def5b4903';
 
     function showUsers() {
         $("#users").empty();
-         $.ajax({
-            url: '/users',
-            cache: false,
-            type: 'GET',
-            headers: {
-                "Authorization": apiKey
-            },
-            success: function(data){
-              var list = $("#users").append('<ul></ul>').find('ul');
-                for (var i = 0; i < data.length; i++) {
-                    list.append('<li>'+data[i].id+' - '+data[i].login+' - <a href="#" onclick="deleteUser('+data[i].id+')">Delete</a> - <a href="#" onclick="updateUser('+data[i].id+')">Update</a></li>');  
-                }
+        var client = new RestClient(apiKey);
+        var result = client.get('/users');
+        if (result.status == 'success') {
+            data = result.data;
+            var list = $("#users").append('<ul></ul>').find('ul');
+            for (var i = 0; i < data.length; i++) {
+                list.append('<li>'+data[i].id+' - '+data[i].login+' - <a href="#" onclick="deleteUser('+data[i].id+')">Delete</a></li>');  
             }
-        });
-    }
-
-    function updateUser(id) {
-        console.log(id)
+        }
     }
 
     function deleteUser(id) {
-        $.ajax({
-            url: '/user/'+id,
-            type: 'DELETE',
-            headers: {
-                "Authorization": apiKey
-            },
-            statusCode: {
-                200: function() {
-                    showUsers();
-                },
-                404: function(data) {
-                    alert('Error deleting user');
-                }
-            }
-        });
+        client = new RestClient(apiKey);
+        result = client.delete('/user/' + id);
+        if (result.status == 'success')
+           showUsers();
+        else
+           alert('Error deleting user');      
         return false;
     }
 
     $('#addUser').submit(function() {
         data = ($(this).serializeArray());
-        $.ajax({
-            url: '/user',
-            data: data,
-            type: 'POST',
-            headers: {
-                "Authorization": apiKey
-            },
-            success: function(data){
-                showUsers();
-            },
-            error: function(data) {
-                alert('Error saving user - ' + data.responseText);
-                
-            }
-        });
+        var client = new RestClient(apiKey);
+        var result = client.post('/user', data);
+        if (result.status == 'success') 
+            showUsers();
+        else
+            alert('Error saving user - ' + result.data);
+
         return false;
     });
 
     function executeRpc() {
-        data = '{"parameters": {"login": "elton","password" : "minetto"}}';
-        $.ajax({
-            url: '/rpc/login',
-            data: data,
-            contentType: 'application/json',
-            type: 'POST',
-            headers: {
-                "Authorization": apiKey
-            },
-            success: function(data){
-                alert(data);
-            },
-            error: function(data) {
-                alert('Error executing rpc - ' + data.responseText);
-            }
-        });
+        params = '{"parameters": {"login": "elton","password" : "minetto"}}';
+        client = new RpcClient(apiKey);
+        result = client.execute('login', params);
+        if (result.status == 'success') 
+            alert(result.data);
+        else
+            alert('Error executing rpc - ' + result.data);
     }
 
     $(document).ready(showUsers);
