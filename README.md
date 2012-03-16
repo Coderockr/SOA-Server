@@ -15,7 +15,7 @@ Instalation
 ----------
 
 - Clone this project
-- Execute vendors.sh to install dependencies (Linux and Mac for now)
+- Execute vendor.sh to install dependencies (Linux and Mac for now)
 - Create a virtual domain in Apache
 
 ---
