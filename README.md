@@ -50,12 +50,14 @@ Rest
 
 To be avaiable as a Rest service an entity must extend the model\Entity class. As an exemple, there is an User entity in this repository. To use it you must create the table, as the SQL below. The database configuration is in configs/configs.php file.
 
-    CREATE TABLE `users` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `login` varchar(10) DEFAULT NULL,
-      `password` varchar(10) DEFAULT NULL,
-      PRIMARY KEY (`id`)
-    );
+	CREATE TABLE `users` (
+		`id` int(11) NOT NULL AUTO_INCREMENT,
+		`login` varchar(10) DEFAULT NULL,
+		`password` varchar(10) DEFAULT NULL,
+		`created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		`updated` timestamp NULL DEFAULT NULL,
+		PRIMARY KEY (`id`)
+	) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
 
 RPC
 ---

@@ -79,6 +79,7 @@ $app->post('/{entity}', function ($entity, Request $request) use ($app, $em, $fi
     $entityName = 'model\\' .ucfirst($entity);
     $entity = new $entityName;
     $entity->set($data);
+    $entity->setCreated(new \DateTime("now"));
 
     //valid entity
     if (count($app['validator']->validate($entity)) > 0) {
@@ -106,6 +107,7 @@ $app->put('/{entity}/{id}', function ($entity, $id, Request $request) use ($app,
     }
 
     $entity->set($data);
+    $entity->setUpdated(new \DateTime("now"));
 
     if (count($app['validator']->validate($entity)) > 0) {
         return new Response('Invalid parameters.', 400, array('Content-Type' => 'text/json'));
