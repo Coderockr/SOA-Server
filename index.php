@@ -63,7 +63,6 @@ $app->get('/{entity}/{filter}', function ($entity, $filter) use ($app, $em)
         $serializer = new service\Serializer();    
         $serializer->setGroups(array('entity', $entity));
         $entityName = 'model\\' .ucfirst($entity);
-        //$query = "SELECT e FROM $entityName e";
 
         $qb = $em->createQueryBuilder();
 
@@ -209,14 +208,14 @@ $app->delete('/{entity}/{id}', function ($entity, $id) use ($app, $em)
 });
 
 //rpc
-$app->post('/rpc/{service}', function ($service, Request $request) use ($app)
+$app->post('/rpc/{service}', function ($service, Request $request) use ($app, $em)
 {
     $service = "service\\". ucfirst($service);
 
     if (!class_exists($service)) {
         return new Response('Invalid service.', 400, array('Content-Type' => 'text/json'));
     }
-    $class = new $service;
+    $class = new $service($em);
     if (!$parameters = $request->get('parameters')) 
         $parameters = array();
 
@@ -252,7 +251,7 @@ $app->before(function (Request $request) use ($app) {
         return new Response('Unauthorized', 401);
     }
 
-    require_once __DIR__.'/configs/clients.php';
+    require_once getenv('APPLICATION_PATH').'/configs/clients.php';
     if (!in_array($request->headers->get('authorization'), array_keys($clients))) {
         return new Response('Unauthorized', 401);
     }

@@ -13,6 +13,9 @@ use Doctrine\ORM\Tools\Setup,
     Doctrine\ORM\Configuration,
     Doctrine\Common\Cache\ArrayCache as Cache,
     Doctrine\Common\Annotations\AnnotationRegistry, 
+    Doctrine\Common\Annotations\AnnotationReader,
+    DMS\Filter\Mapping,
+    DMS\Filter\Filter,
     Doctrine\Common\ClassLoader;
 
 require_once __DIR__.'/vendor/silex.phar';
@@ -43,17 +46,22 @@ $classLoaderDMS->register();
 $classLoaderMetadata = new \Doctrine\Common\ClassLoader('Metadata', __DIR__.'/vendor/Metadata/src' );
 $classLoaderMetadata->register(); 
 
-$classLoaderModel = new \Doctrine\Common\ClassLoader('model', __DIR__ );
-$classLoaderModel->register(); 
-
-$classLoaderService = new \Doctrine\Common\ClassLoader('service', __DIR__ );
-$classLoaderService->register(); 
-
-$classLoaderTest = new \Doctrine\Common\ClassLoader('test', __DIR__ );
-$classLoaderTest->register(); 
+$classLoaderLibrary = new \Doctrine\Common\ClassLoader('library', __DIR__ );
+$classLoaderLibrary->register(); 
 
 $classLoaderCoderockr = new \Doctrine\Common\ClassLoader('Coderockr', __DIR__.'/vendor' );
 $classLoaderCoderockr->register();
+
+$classLoaderModel = new \Doctrine\Common\ClassLoader('model', getenv('APPLICATION_PATH') . '/library' );
+$classLoaderModel->register(); 
+
+$classLoaderService = new \Doctrine\Common\ClassLoader('service', getenv('APPLICATION_PATH') . '/library' );
+$classLoaderService->register(); 
+
+$classLoaderTest = new \Doctrine\Common\ClassLoader('test', getenv('APPLICATION_PATH') . '/library' );
+$classLoaderTest->register(); 
+
+
 
 if(!getenv('APPLICATION_ENV')) 
     $env = 'testing';
@@ -61,13 +69,25 @@ else
     $env = getenv('APPLICATION_ENV');
 
 if ($env == 'testing')
-    include __DIR__.'/configs/configs.testing.php';
+    include getenv('APPLICATION_PATH').'/configs/configs.testing.php';
 elseif ($env == 'development')
-    include __DIR__.'/configs/configs.development.php';
+    include getenv('APPLICATION_PATH').'/configs/configs.development.php';
 else
-    include __DIR__.'/configs/configs.php';
+    include getenv('APPLICATION_PATH').'/configs/configs.php';
 
-include __DIR__.'/library/filter.php';
+//filter
+//Get Doctrine Reader
+$reader = new AnnotationReader();
+//$reader->setEnableParsePhpImports(true);
+
+//Load AnnotationLoader
+$loader = new Mapping\Loader\AnnotationLoader($reader);
+
+//Get a MetadataFactory
+$metadataFactory = new Mapping\ClassMetadataFactory($loader);
+
+//Get a Filter
+$filter = new Filter($metadataFactory);
 
 //doctrine
 $config = new Configuration();
@@ -80,6 +100,7 @@ $config->setAutoGenerateProxyClasses(true);
 //mapping (example uses annotations, could be any of XML/YAML or plain PHP)
 AnnotationRegistry::registerFile(__DIR__.'/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
 AnnotationRegistry::registerAutoloadNamespace('JMS', __DIR__.'/vendor');
+AnnotationRegistry::registerAutoloadNamespace('DMS', __DIR__.'/vendor');
 
 $driver = new Doctrine\ORM\Mapping\Driver\AnnotationDriver(
     new Doctrine\Common\Annotations\AnnotationReader(),
@@ -97,10 +118,15 @@ $em = EntityManager::create(
 
 //load subscribers
 $evm = $em->getEventManager();
-$directoryIterator = new \DirectoryIterator(__DIR__ . '/model/subscriber');
-foreach ($directoryIterator as $f) {
-    if ($f->getFileName() != '.' && $f->getFilename() !='..') {
-        $subscriber = 'model\\subscriber\\' . $f->getBasename('.php');
-        $evm->addEventSubscriber(new $subscriber);
+try {
+    $directoryIterator = new \DirectoryIterator(__DIR__ . '/model/subscriber');
+    foreach ($directoryIterator as $f) {
+        if ($f->getFileName() != '.' && $f->getFilename() !='..') {
+            $subscriber = 'model\\subscriber\\' . $f->getBasename('.php');
+            $evm->addEventSubscriber(new $subscriber);
+        }
     }
+}catch (UnexpectedValueException $e) {
+    //directory doesn't exists
 }
+

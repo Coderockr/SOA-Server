@@ -1,5 +1,5 @@
 <?php
-namespace service;
+namespace library;
 
 
 use JMS\SerializerBundle\Serializer\Serializer as JMSSerializer;
