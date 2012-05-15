@@ -1,84 +1,67 @@
 <?php
+
 namespace model;
 
-use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\ORM\Mapping as ORM,
+    Doctrine\ORM\PersistentCollection as Collection,
+    JMS\SerializerBundle\Annotation as JMS;
+    
 abstract class Entity
 {
-   /**
-     * @var DateTime $created
-     *
+
+    /**
+     * @ORM\Id @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     * @JMS\Groups({"entity"})
+     * @var integer
+     */
+    protected $id;
+
+    /**
      * @ORM\Column(type="datetime")
+     * @JMS\Groups({"entity"})
+     * @var datetime
      */
     protected $created;
 
     /**
-     * @var DateTime $updated
-     *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",nullable=true)
+     * @JMS\Groups({"entity"})
+     * @var datetime
      */
     protected $updated;
 
+    public function __construct()
+    {
+        $this->setCreated(date('Y-m-d H:i:s'));
+    }
+
     /**
-     * Get data was created.
-     *
-     * @return DateTime
+     * @return integer
      */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function getCreated()
     {
         return $this->created;
     }
+    
+    public function setCreated($created)
+    {
+        $this->created = \DateTime::createFromFormat('Y-m-d H:i:s', $created);    
+    }
 
-    /**
-     * Get date entity was updated.
-     *
-     * @return DateTime
-     */
     public function getUpdated()
     {
         return $this->updated;
     }
-
-    /**
-     * Set date entity was updated.
-     * @param Datetime
-     * @return void
-     */
-    public function setUpdated($date)
+    
+    public function setUpdated($updated)
     {
-        $this->updated = $date;
-    }
-
-    /**
-     * Set date entity was created.
-     * @param Datetime
-     * @return void
-     */
-    public function setCreated($date)
-    {
-        $this->created = $date;
-    }
-
-    /**
-     * Convert an Entity to Json
-     * 
-     * 
-     * @return mixed 
-     */
-    public function toJson()
-    {
-        $class = new \ReflectionClass($this);
-        $methods = $class->getMethods();
-        $data = array();
-        foreach($class->getProperties() as $p) {
-            $name = $p->getName();
-            $method = 'get'. ucfirst($name);
-            if ($class->hasMethod($method)) {
-                $data[$name] = call_user_func(array($this, $method));    
-            }
-        }
-        return json_encode($data);
+        $this->updated = \DateTime::createFromFormat('Y-m-d H:i:s', $updated);
     }
 
     /**

@@ -1,28 +1,40 @@
-function RpcClient(apiKey) {
+function RpcClient (apiKey, callbackList) {
         this.apiKey = apiKey;
-        
+        this.callbackList = {
+            "success": function (data) { console.log('success', data); },
+            "error": function (data) { console.log('error', data); },
+            "beforeSend": function (jqXHR, settings) {
+                $('#loading-overlay').fadeIn();
+            },
+            "complete": function (jqXHR, textStatus) {
+                $('#loading-overlay').fadeOut();
+            }
+        };
+
+        for (var callback in callbackList) {
+            this.callbackList[callback] = callbackList[callback];
+        }
+
         this.execute = function (procedure, params) {
             var result;
             var status; 
-            
+
             $.ajax({
-                url: '/rpc/' + procedure,
+                url: procedure,
+                beforeSend: this.callbackList.beforeSend,
                 data: params,
-                contentType: 'application/json',
+                dataType: 'json',
                 type: 'POST',
-                async: false, 
+                crossDomain: true,
+                cache: false,
                 headers: {
                     "Authorization": this.apiKey
                 },
-                success: function(data){
-                    result = data;
-                    status = 'success';
-                },
-                error: function(data) {
-                    result = data.responseText;
-                    status = 'error';
+                complete: this.callbackList.complete,
+                statusCode: {
+                    200: this.callbackList.success,
+                    500: this.callbackList.error
                 }
-            });  
-            return {status: status, data: result};  
+            }); 
         }
     }

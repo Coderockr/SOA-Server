@@ -29,7 +29,7 @@ $em = EntityManager::create(
     array(
         'driver' => 'pdo_mysql',
         'user' => 'root',
-        'password' => '',
+        'password' => '194639gh',
         'dbname' => 'rest'
     ),
     $config

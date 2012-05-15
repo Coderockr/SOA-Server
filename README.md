@@ -1,3 +1,9 @@
+DEPRECATED
+===========
+
+Usar o README do projeto
+
+
 Coderockr SOA Server
 =========================
 
@@ -15,13 +21,13 @@ Instalation
 ----------
 
 - Clone this project
-- Execute vendor.sh to install dependencies (Linux and Mac for now)
+- Execute vendors.sh to install dependencies (Linux and Mac for now)
 - Create a virtual domain in Apache
 
 ---
 	<VirtualHost *:80>
         DocumentRoot "/Users/eminetto/Documents/Projects/SOA-Server"
-		ServerName soa.local
+		ServerName soa.dev
 		<Directory "/Users/eminetto/Documents/Projects/SOA-Server">
 			Options Indexes Multiviews FollowSymLinks
 			AllowOverride All
@@ -42,7 +48,7 @@ Instalation
 
 - Configure /etc/hosts:
     
-    127.0.0.1   soa.local
+    127.0.0.1   soa.dev
 
 
 Rest
@@ -50,19 +56,17 @@ Rest
 
 To be avaiable as a Rest service an entity must extend the model\Entity class. As an exemple, there is an User entity in this repository. To use it you must create the table, as the SQL below. The database configuration is in configs/configs.php file.
 
-	CREATE TABLE `users` (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`login` varchar(10) DEFAULT NULL,
-		`password` varchar(10) DEFAULT NULL,
-		`created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		`updated` timestamp NULL DEFAULT NULL,
-		PRIMARY KEY (`id`)
-	) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
+    CREATE TABLE `users` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `login` varchar(10) DEFAULT NULL,
+      `password` varchar(10) DEFAULT NULL,
+      PRIMARY KEY (`id`)
+    );
 
 RPC
 ---
 
-To be avaiable as a Rpc service a class must extend procedure\Procedure class, as shown in the procedure\Login.php sample.
+To be avaiable as a Rpc service a class must extend service\Service class, as shown in the service\Login.php sample.
 
 Authorization
 -----------
@@ -74,6 +78,18 @@ How to access
 
 Urls:
 
-	http://soa.local/user/1 - show user with id = 1
-	http://soa.local/users - show all users
-	http://soa.local/sample - the sample.html file shows how to use the services using Javascript
+	http://soa.dev/user/1 - show user with id = 1
+	http://soa.dev/users - show all users
+	http://soa.dev/sample - the sample.html file shows how to use the services using Javascript
+	
+	
+#Geração das tabelas
+
+Para que o Doctrine gere as tabelas no banco de dados baseado nas entidades:
+
+	cd Backend/SOA-Server
+	APPLICATION_ENV=development php ./bin/doctrine.php orm:schema-tool:create
+	APPLICATION_ENV=testing php ./bin/doctrine.php orm:schema-tool:create
+	
+Desta forma são criadas as tabelas na base de desenvolvimento e na de testes
+	

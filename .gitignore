@@ -1,0 +1,9 @@
+vendor/
+_reports
+*.bak
+soa.log
+*.DS_Store
+.project
+.classpath
+uploads/
+*sublime*
