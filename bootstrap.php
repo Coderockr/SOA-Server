@@ -119,7 +119,7 @@ $em = EntityManager::create(
 //load subscribers
 $evm = $em->getEventManager();
 try {
-    $directoryIterator = new \DirectoryIterator(__DIR__ . '/model/subscriber');
+    $directoryIterator = new \DirectoryIterator(getenv('APPLICATION_PATH') . '/library/model/subscriber');
     foreach ($directoryIterator as $f) {
         if ($f->getFileName() != '.' && $f->getFilename() !='..') {
             $subscriber = 'model\\subscriber\\' . $f->getBasename('.php');
