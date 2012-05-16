@@ -32,7 +32,7 @@ $app->register(new Silex\Provider\ValidatorServiceProvider(), array(
 ));
 
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile'       => __DIR__.'/logs/soa.log',
+    'monolog.logfile'       => getenv('APPLICATION_PATH').'/logs/soa.log',
     'monolog.class_path'    => __DIR__.'/vendor/monolog/src',
 ));
 
