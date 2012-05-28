@@ -17,4 +17,4 @@ mkdir JMS
 git clone git://github.com/schmittjoh/JMSSerializerBundle.git JMS/SerializerBundle
 git clone http://github.com/schmittjoh/metadata.git Metadata
 mkdir Coderockr
-wget https://raw.github.com/gist/2585353/d894a0c324bb1020a3bb97d918b343ff6c2ed29e/Coderockr_Image.php -O Coderockr/Image.php
+wget https://raw.github.com/gist/2585353/c74030d90d8a4f82388a69c9dd7fc6a880ff0565/Coderockr_Image.php -O Coderockr/Image.php
