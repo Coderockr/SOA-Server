@@ -69,11 +69,11 @@ else
     $env = getenv('APPLICATION_ENV');
 
 if ($env == 'testing')
-    include getenv('APPLICATION_PATH').'/configs/configs.testing.php';
+    include getenv('APPLICATION_PATH'). DIRECTORY_SEPARATOR .  'configs' . DIRECTORY_SEPARATOR . 'configs.testing.php';
 elseif ($env == 'development')
-    include getenv('APPLICATION_PATH').'/configs/configs.development.php';
+    include getenv('APPLICATION_PATH'). DIRECTORY_SEPARATOR . 'configs' . DIRECTORY_SEPARATOR . 'configs.development.php';
 else
-    include getenv('APPLICATION_PATH').'/configs/configs.php';
+    include getenv('APPLICATION_PATH').DIRECTORY_SEPARATOR . 'configs' . DIRECTORY_SEPARATOR . 'configs.php';
 
 //filter
 //Get Doctrine Reader
@@ -98,13 +98,13 @@ $config->setProxyNamespace('EntityProxy');
 $config->setAutoGenerateProxyClasses(true);
  
 //mapping (example uses annotations, could be any of XML/YAML or plain PHP)
-AnnotationRegistry::registerFile(__DIR__.'/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
-AnnotationRegistry::registerAutoloadNamespace('JMS', __DIR__.'/vendor');
-AnnotationRegistry::registerAutoloadNamespace('DMS', __DIR__.'/vendor');
+AnnotationRegistry::registerFile(__DIR__. DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'doctrine' . DIRECTORY_SEPARATOR . 'orm' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'Doctrine' . DIRECTORY_SEPARATOR . 'ORM' . DIRECTORY_SEPARATOR . 'Mapping' . DIRECTORY_SEPARATOR . 'Driver' . DIRECTORY_SEPARATOR . 'DoctrineAnnotations.php');
+AnnotationRegistry::registerAutoloadNamespace('JMS', __DIR__. DIRECTORY_SEPARATOR . 'vendor');
+AnnotationRegistry::registerAutoloadNamespace('DMS', __DIR__. DIRECTORY_SEPARATOR . 'vendor');
 
 $driver = new Doctrine\ORM\Mapping\Driver\AnnotationDriver(
     new Doctrine\Common\Annotations\AnnotationReader(),
-    array(__DIR__ .'/model')
+    array(__DIR__ . DIRECTORY_SEPARATOR . 'model')
 );
 $config->setMetadataDriverImpl($driver);
 $config->setMetadataCacheImpl($cache);
@@ -119,7 +119,7 @@ $em = EntityManager::create(
 //load subscribers
 $evm = $em->getEventManager();
 try {
-    $directoryIterator = new \DirectoryIterator(getenv('APPLICATION_PATH') . '/library/model/subscriber');
+    $directoryIterator = new \DirectoryIterator(getenv('APPLICATION_PATH') . DIRECTORY_SEPARATOR . 'library' . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'subscriber');
     foreach ($directoryIterator as $f) {
         if ($f->getFileName() != '.' && $f->getFilename() !='..') {
             $subscriber = 'model\\subscriber\\' . $f->getBasename('.php');
