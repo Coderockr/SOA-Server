@@ -38,8 +38,16 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 
 
 //Rest functions
-$app->get('/{entity}/{id}', function ($entity, $id) use ($em, $app) 
+$app->get('/{entity}/{id}', function ($entity, $id) use ($em, $app, $entityCache) 
 {
+    if ($entityCache) {
+        $entityCache->setNamespace($entity);
+        $data = $entityCache->fetch($entity . '_' . $id);
+        if ($data) {
+            return new Response($data, 200, array('Content-Type' => 'text/json'));
+        }
+    }
+
     try {
         $data = $em->find('model\\'.ucfirst($entity), $id);
     }
@@ -54,11 +62,21 @@ $app->get('/{entity}/{id}', function ($entity, $id) use ($em, $app)
    
     $serializer = new service\Serializer();
     $serializer->setGroups(array('entity', $entity));
-    return new Response($serializer->serialize($data, 'json'), 200,  array('Content-Type' => 'text/json'));
+    $data = $serializer->serialize($data, 'json');
+    if ($entityCache) 
+        $entityCache->save($entity . '_' . $id, $data);
+    return new Response($data, 200,  array('Content-Type' => 'text/json'));
 })->assert('id', '\d+');
 
-$app->get('/{entity}/{filter}', function ($entity, $filter) use ($app, $em) 
+$app->get('/{entity}/{filter}', function ($entity, $filter) use ($app, $em, $entityCache) 
 {
+    if (!$filter && $entityCache) {
+        $entityCache->setNamespace($entity);
+        $data = $entityCache->fetch($entity);
+        if ($data) {
+            return new Response($data, 200, array('Content-Type' => 'text/json'));
+        }
+    }
     try {
         $serializer = new service\Serializer();    
         $serializer->setGroups(array('entity', $entity));
@@ -92,12 +110,19 @@ $app->get('/{entity}/{filter}', function ($entity, $filter) use ($app, $em)
     if(count($data) == 0) {
         return new Response('Data not found', 404, array('Content-Type' => 'text/json'));
     }
+    if (!$filter && $entityCache) {
+        $entityCache->save($entity , $data);
+    }
     return new Response($data, 200, array('Content-Type' => 'text/json'));
 
 })->value('filter', null);
 
-$app->post('/{entity}', function ($entity, Request $request) use ($app, $em, $filter) 
+$app->post('/{entity}', function ($entity, Request $request) use ($app, $em, $filter, $entityCache) 
 {
+    if ($entityCache) {
+        $entityCache->setNamespace($entity);
+        $cacheKey = $entity;
+    }
     $serializer = new service\Serializer();
     $serializer->setGroups(array('entity', $entity));
 
@@ -144,11 +169,26 @@ $app->post('/{entity}', function ($entity, Request $request) use ($app, $em, $fi
         return new Response($e->getMessage(), 500, array('Content-Type' => 'text/json'));
     }
     
+    //clean cache. Entity and all related entities
+    if ($entityCache) {
+        $entityCache->deleteAll();
+        $metadata = $em->getClassMetadata($entityName);
+        foreach($metadata->getAssociationMappings() as $assoc) {
+            $cacheKey = explode('\\', $assoc['targetEntity']);
+            $relatedEntity = strtolower($cacheKey[1]);
+            $entityCache->setNamespace($relatedEntity);
+            $entityCache->deleteAll();
+        }
+    }
     return new Response($serializer->serialize($entity, 'json'), 200,  array('Content-Type' => 'text/json'));
 });
 
-$app->put('/{entity}/{id}', function ($entity, $id, Request $request) use ($app, $em, $filter) 
+$app->put('/{entity}/{id}', function ($entity, $id, Request $request) use ($app, $em, $filter, $entityCache) 
 {
+    if ($entityCache) {
+        $entityCache->setNamespace($entity);
+        $cacheKey = $entity;
+    }
     $serializer = new service\Serializer();
     $serializer->setGroups(array('entity', $entity));
     $entityName = 'model\\' .ucfirst($entity);
@@ -193,17 +233,48 @@ $app->put('/{entity}/{id}', function ($entity, $id, Request $request) use ($app,
         $app['monolog']->addError($e->getMessage());
         return new Response($e->getMessage(), 500, array('Content-Type' => 'text/json'));
     }
+    //clean cache. Entity and all related entities
+    if ($entityCache) {
+        $entityCache->delete($cacheKey);
+        $entityCache->delete($cacheKey . '_' . $id);
+        $metadata = $em->getClassMetadata($entityName);
+        foreach($metadata->getAssociationMappings() as $assoc) {
+            $cacheKey = explode('\\', $assoc['targetEntity']);
+            $relatedEntity = strtolower($cacheKey[1]);
+            $entityCache->setNamespace($relatedEntity);
+            $entityCache->deleteAll();
+        }
+    }
+
+
     return new Response($serializer->serialize($entity, 'json'), 200,  array('Content-Type' => 'text/json'));
 });
 
-$app->delete('/{entity}/{id}', function ($entity, $id) use ($app, $em) 
+$app->delete('/{entity}/{id}', function ($entity, $id) use ($app, $em, $entityCache) 
 {
+    if ($entityCache) {
+        $entityCache->setNamespace($entity);
+        $cacheKey = $entity;
+    }
+    $entityName = 'model\\' .ucfirst($entity);
     if (!$entity = $em->find('model\\'.ucfirst($entity), $id)) {
         return new Response('Data not found.', 404, array('Content-Type' => 'text/json'));
     }
     $em->remove($entity);
     $em->flush();
-    
+    //clean cache. Entity and all related entities
+    if ($entityCache) {
+        $entityCache->delete($cacheKey);
+        $entityCache->delete($cacheKey . '_' . $id);
+        $metadata = $em->getClassMetadata($entityName);
+        foreach($metadata->getAssociationMappings() as $assoc) {
+            $cacheKey = explode('\\', $assoc['targetEntity']);
+            $relatedEntity = strtolower($cacheKey[1]);
+            $entityCache->setNamespace($relatedEntity);
+            $entityCache->deleteAll();
+        }
+    }
+     
     return new Response('Data deleted.', 200, array('Content-Type' => 'text/json'));
 });
 

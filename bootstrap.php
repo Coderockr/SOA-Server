@@ -91,11 +91,16 @@ $filter = new Filter($metadataFactory);
 
 //doctrine
 $config = new Configuration();
-$cache = new Cache();
+//$cache = new Cache();
+$cache = new \Doctrine\Common\Cache\ApcCache();
 $config->setQueryCacheImpl($cache);
 $config->setProxyDir('/tmp');
 $config->setProxyNamespace('EntityProxy');
 $config->setAutoGenerateProxyClasses(true);
+$entityCache  = null;
+if ($useCache == 1) {
+    $entityCache = $cache;
+}
  
 //mapping (example uses annotations, could be any of XML/YAML or plain PHP)
 AnnotationRegistry::registerFile(__DIR__. DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'doctrine' . DIRECTORY_SEPARATOR . 'orm' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'Doctrine' . DIRECTORY_SEPARATOR . 'ORM' . DIRECTORY_SEPARATOR . 'Mapping' . DIRECTORY_SEPARATOR . 'Driver' . DIRECTORY_SEPARATOR . 'DoctrineAnnotations.php');
@@ -114,7 +119,6 @@ $em = EntityManager::create(
     $dbOptions,
     $config
 );
-
 
 //load subscribers
 $evm = $em->getEventManager();
