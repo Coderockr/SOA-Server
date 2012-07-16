@@ -52,6 +52,9 @@ $classLoaderLibrary->register();
 $classLoaderCoderockr = new \Doctrine\Common\ClassLoader('Coderockr', __DIR__.'/vendor' );
 $classLoaderCoderockr->register();
 
+$classLoaderImageWorkshop = new \Doctrine\Common\ClassLoader('PHPImageWorkshop', __DIR__.'/vendor/ImageWorkshop/src' );
+$classLoaderImageWorkshop->register();
+
 $classLoaderModel = new \Doctrine\Common\ClassLoader('model', getenv('APPLICATION_PATH') . '/library' );
 $classLoaderModel->register(); 
 

@@ -18,3 +18,4 @@ git clone git://github.com/schmittjoh/JMSSerializerBundle.git JMS/SerializerBund
 git clone http://github.com/schmittjoh/metadata.git Metadata
 mkdir Coderockr
 wget https://raw.github.com/gist/2585353/f33fd03de60775db38a4a229fb82a140e75e78e8/Coderockr_Image.php -O Coderockr/Image.php
+git clone https://github.com/Sybio/ImageWorkshop.git
