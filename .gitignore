@@ -7,3 +7,4 @@ soa.log
 .classpath
 uploads/
 *sublime*
+composer.phar
