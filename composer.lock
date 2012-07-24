@@ -1,0 +1,175 @@
+{
+    "hash": "a451563453bf2a2899dc3fbd8cd053b6",
+    "packages": [
+        {
+            "package": "dms/dms",
+            "version": "dev-master",
+            "source-reference": "2014eac68754bfe98214c3541a6942857488e19a",
+            "commit-date": "1343138838"
+        },
+        {
+            "package": "doctrine/common",
+            "version": "dev-master",
+            "alias-pretty-version": "2.4.x-dev",
+            "alias-version": "2.4.9999999.9999999-dev"
+        },
+        {
+            "package": "doctrine/common",
+            "version": "dev-master",
+            "source-reference": "8cb70d80c5c95add69e5055044bb1bd4bf5de987",
+            "commit-date": "1343050234"
+        },
+        {
+            "package": "doctrine/dbal",
+            "version": "dev-master",
+            "alias-pretty-version": "2.4.x-dev",
+            "alias-version": "2.4.9999999.9999999-dev"
+        },
+        {
+            "package": "doctrine/dbal",
+            "version": "dev-master",
+            "source-reference": "cb59d2b0922748f19c9a1f37fa8d70f2669fb408",
+            "commit-date": "1343019872"
+        },
+        {
+            "package": "doctrine/orm",
+            "version": "dev-master",
+            "source-reference": "619d29adb23a1ebab2b3f7277fca4cd159e50d41",
+            "commit-date": "1343019855"
+        },
+        {
+            "package": "jms/metadata",
+            "version": "dev-master",
+            "alias-pretty-version": "1.2.x-dev",
+            "alias-version": "1.2.9999999.9999999-dev"
+        },
+        {
+            "package": "jms/metadata",
+            "version": "dev-master",
+            "source-reference": "dbfbb15b3ffdf96c5ff14e5cd4451d78a7083a36",
+            "commit-date": "1339680164"
+        },
+        {
+            "package": "jms/serializer-bundle",
+            "version": "dev-master",
+            "source-reference": "6bd1105030c7cc12fbd8ac64cb3a926777806045",
+            "commit-date": "1342557364"
+        },
+        {
+            "package": "monolog/monolog",
+            "version": "dev-master",
+            "source-reference": "59fb9f41be22b246f5e5d3bd8a012ed77f44a7d0",
+            "commit-date": "1342167011"
+        },
+        {
+            "package": "pimple/pimple",
+            "version": "dev-master",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "pimple/pimple",
+            "version": "dev-master",
+            "source-reference": "db836b8cfadc0f39dacafa2bf311a1ab603600bb",
+            "commit-date": "1343051648"
+        },
+        {
+            "package": "silex/silex",
+            "version": "dev-master",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "silex/silex",
+            "version": "dev-master",
+            "source-reference": "3ae77d823cc30dcfe4ec342614c8f400abb26657",
+            "commit-date": "1342943573"
+        },
+        {
+            "package": "sybio/image-workshop",
+            "version": "dev-master",
+            "source-reference": "cf46a777dc72139cef76575eed9437f15a17af8e",
+            "commit-date": "1342731772"
+        },
+        {
+            "package": "symfony/class-loader",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA4",
+            "commit-date": "1342347231"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA4",
+            "commit-date": "1342347231"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA4",
+            "commit-date": "1342739894"
+        },
+        {
+            "package": "symfony/http-foundation",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/http-foundation",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA4",
+            "commit-date": "1343042318"
+        },
+        {
+            "package": "symfony/http-kernel",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/http-kernel",
+            "version": "dev-master",
+            "source-reference": "91f3e0892bd0c7f2a5ade8a82024ec4925e26c64",
+            "commit-date": "1343064472"
+        },
+        {
+            "package": "symfony/routing",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/routing",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA4",
+            "commit-date": "1342708743"
+        },
+        {
+            "package": "symfony/validator",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA4",
+            "commit-date": "1342762453"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "dms/dms": 20
+    }
+}

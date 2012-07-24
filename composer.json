@@ -1,0 +1,17 @@
+{
+    "minimum-stability": "dev",
+    "require": {
+        "silex/silex": "1.0.*",
+        "dms/dms": "dev-master", 
+        "doctrine/common": "*",
+        "doctrine/dbal": "*",
+        "doctrine/orm": "*",
+        "symfony/validator": "*",
+        "symfony/class-loader": "*",
+        "symfony/console": "*",
+        "monolog/monolog": "*",
+        "jms/metadata": "*",
+        "jms/serializer-bundle": "*",
+        "sybio/image-workshop": "*"
+    }
+}

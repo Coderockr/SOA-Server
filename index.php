@@ -19,24 +19,6 @@ if(!getenv('APPLICATION_ENV'))
 else
     $env = getenv('APPLICATION_ENV');
 
-//app configuration
-$app->register(new DoctrineServiceProvider(), array(
-    'db.options'  => $dbOptions,
-    'db.dbal.class_path' => 'vendor' . DIRECTORY_SEPARATOR . 'doctrine-dbal' . DIRECTORY_SEPARATOR . 'lib',
-    'db.common.class_path' => 'vendor' . DIRECTORY_SEPARATOR . 'doctrine-common' . DIRECTORY_SEPARATOR . 'lib',
-));
-
-
-$app->register(new Silex\Provider\ValidatorServiceProvider(), array(
-    'validator.class_path'    => __DIR__. DIRECTORY_SEPARATOR . 'vendor',
-));
-
-$app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile'       => getenv('APPLICATION_PATH'). DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'soa.log',
-    'monolog.class_path'    => __DIR__. DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'monolog' . DIRECTORY_SEPARATOR . 'src',
-));
-
-
 //Rest functions
 $app->get('/{entity}/{id}', function ($entity, $id) use ($em, $app, $entityCache) 
 {
@@ -337,6 +319,5 @@ $app->after(function (Request $request, Response $response) {
     $response->headers->set('Content-Type', 'text/json');
 });
 
-
-
+$app['debug'] = true;
 $app->run();

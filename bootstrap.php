@@ -1,10 +1,10 @@
 <?php
-use Silex\Provider\DoctrineServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Silex\Provider\ValidatorServiceProvider;
-use Symfony\Component\ClassLoader\UniversalClassLoader;
+//require_once __DIR__.'/vendor/autoload.php';
 
+$loader = require_once __DIR__.'/vendor/autoload.php';
+$loader->add('model', getenv('APPLICATION_PATH') . '/library');
+$loader->add('service', getenv('APPLICATION_PATH') . '/library');
+$loader->add('test', getenv('APPLICATION_PATH') . '/library');
 
 use Doctrine\ORM\Tools\Setup,
     Doctrine\ORM\EntityManager,
@@ -17,54 +17,6 @@ use Doctrine\ORM\Tools\Setup,
     DMS\Filter\Mapping,
     DMS\Filter\Filter,
     Doctrine\Common\ClassLoader;
-
-require_once __DIR__.'/vendor/silex.phar';
-
-require_once __DIR__.'/vendor/doctrine/common/lib/Doctrine/Common/ClassLoader.php';
-
-$classLoaderSymfony = new \Doctrine\Common\ClassLoader('Symfony', __DIR__.'/vendor' );
-$classLoaderSymfony->register(); 
-
-$classLoaderDoctrineCommon = new \Doctrine\Common\ClassLoader('Doctrine\\Common', __DIR__.'/vendor/doctrine/common/lib' );
-$classLoaderDoctrineCommon->register(); 
-
-$classLoaderDoctrineMigrations = new \Doctrine\Common\ClassLoader('Doctrine\\DBAL\\Migrations', __DIR__.'/vendor/doctrine/dbal/lib' );
-$classLoaderDoctrineMigrations->register(); 
-
-$classLoaderDoctrineDbal = new \Doctrine\Common\ClassLoader('Doctrine\\DBAL', __DIR__.'/vendor/doctrine/dbal/lib' );
-$classLoaderDoctrineDbal->register(); 
-
-$classLoaderDoctrine = new \Doctrine\Common\ClassLoader('Doctrine', __DIR__.'/vendor/doctrine/orm/lib' );
-$classLoaderDoctrine->register(); 
-
-$classLoaderJMS = new \Doctrine\Common\ClassLoader('JMS', __DIR__.'/vendor' );
-$classLoaderJMS->register(); 
-
-$classLoaderDMS = new \Doctrine\Common\ClassLoader('DMS', __DIR__.'/vendor' );
-$classLoaderDMS->register(); 
-
-$classLoaderMetadata = new \Doctrine\Common\ClassLoader('Metadata', __DIR__.'/vendor/Metadata/src' );
-$classLoaderMetadata->register(); 
-
-$classLoaderLibrary = new \Doctrine\Common\ClassLoader('library', __DIR__ );
-$classLoaderLibrary->register(); 
-
-$classLoaderCoderockr = new \Doctrine\Common\ClassLoader('Coderockr', __DIR__.'/vendor' );
-$classLoaderCoderockr->register();
-
-$classLoaderImageWorkshop = new \Doctrine\Common\ClassLoader('PHPImageWorkshop', __DIR__.'/vendor/ImageWorkshop/src' );
-$classLoaderImageWorkshop->register();
-
-$classLoaderModel = new \Doctrine\Common\ClassLoader('model', getenv('APPLICATION_PATH') . '/library' );
-$classLoaderModel->register(); 
-
-$classLoaderService = new \Doctrine\Common\ClassLoader('service', getenv('APPLICATION_PATH') . '/library' );
-$classLoaderService->register(); 
-
-$classLoaderTest = new \Doctrine\Common\ClassLoader('test', getenv('APPLICATION_PATH') . '/library' );
-$classLoaderTest->register(); 
-
-
 
 if(!getenv('APPLICATION_ENV')) 
     $env = 'testing';
@@ -107,7 +59,7 @@ if (isset($useCache) && $useCache == 1) {
  
 //mapping (example uses annotations, could be any of XML/YAML or plain PHP)
 AnnotationRegistry::registerFile(__DIR__. DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'doctrine' . DIRECTORY_SEPARATOR . 'orm' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'Doctrine' . DIRECTORY_SEPARATOR . 'ORM' . DIRECTORY_SEPARATOR . 'Mapping' . DIRECTORY_SEPARATOR . 'Driver' . DIRECTORY_SEPARATOR . 'DoctrineAnnotations.php');
-AnnotationRegistry::registerAutoloadNamespace('JMS', __DIR__. DIRECTORY_SEPARATOR . 'vendor');
+AnnotationRegistry::registerAutoloadNamespace('JMS', __DIR__. DIRECTORY_SEPARATOR . 'vendor/jms/serializer-bundle/');
 AnnotationRegistry::registerAutoloadNamespace('DMS', __DIR__. DIRECTORY_SEPARATOR . 'vendor');
 
 $driver = new Doctrine\ORM\Mapping\Driver\AnnotationDriver(
@@ -136,4 +88,3 @@ try {
 }catch (UnexpectedValueException $e) {
     //directory doesn't exists
 }
-
