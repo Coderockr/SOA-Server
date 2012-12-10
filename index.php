@@ -22,18 +22,18 @@ else
 //app configuration
 $app->register(new DoctrineServiceProvider(), array(
     'db.options'  => $dbOptions,
-    'db.dbal.class_path' => 'vendor' . DIRECTORY_SEPARATOR . 'doctrine-dbal' . DIRECTORY_SEPARATOR . 'lib',
-    'db.common.class_path' => 'vendor' . DIRECTORY_SEPARATOR . 'doctrine-common' . DIRECTORY_SEPARATOR . 'lib',
+    // 'db.dbal.class_path' => 'vendor' . DIRECTORY_SEPARATOR . 'doctrine-dbal' . DIRECTORY_SEPARATOR . 'lib',
+    // 'db.common.class_path' => 'vendor' . DIRECTORY_SEPARATOR . 'doctrine-common' . DIRECTORY_SEPARATOR . 'lib',
 ));
 
 
 $app->register(new Silex\Provider\ValidatorServiceProvider(), array(
-    'validator.class_path'    => __DIR__. DIRECTORY_SEPARATOR . 'vendor',
+    // 'validator.class_path'    => __DIR__. DIRECTORY_SEPARATOR . 'vendor',
 ));
 
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile'       => getenv('APPLICATION_PATH'). DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'soa.log',
-    'monolog.class_path'    => __DIR__. DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'monolog' . DIRECTORY_SEPARATOR . 'src',
+    // 'monolog.class_path'    => __DIR__. DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'monolog' . DIRECTORY_SEPARATOR . 'src',
 ));
 
 

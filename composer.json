@@ -1,0 +1,19 @@
+{
+    "require": {
+        "silex/silex": "1.0.*@dev",
+        "dms/dms-filter": "dev-master",
+        "doctrine/common": "2.3.x-dev",
+        "doctrine/dbal": "2.3.x-dev",
+        "doctrine/orm": "2.3.x-dev",
+        "symfony/class-loader": "2.1.x-dev",
+        "symfony/validator": "2.1.x-dev",
+        "symfony/console": "2.1.x-dev",
+        "symfony/monolog-bridge": "2.1.x-dev",
+        "phpcollection/phpcollection": "0.1.x-dev",
+        "jms/serializer": "1.0.x-dev",
+        "jms/metadata": "1.2.x-dev",
+        "jms/serializer-bundle": "1.0.x-dev",
+        "jms/di-extra-bundle": "1.3.x-dev",
+        "sybio/image-workshop": "dev-master"
+    }
+}

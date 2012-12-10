@@ -18,42 +18,45 @@ use Doctrine\ORM\Tools\Setup,
     DMS\Filter\Filter,
     Doctrine\Common\ClassLoader;
 
-require_once __DIR__.'/vendor/silex.phar';
+require_once __DIR__.'/vendor/autoload.php';
 
-require_once __DIR__.'/vendor/doctrine/common/lib/Doctrine/Common/ClassLoader.php';
+// require_once __DIR__.'/vendor/doctrine/common/lib/Doctrine/Common/ClassLoader.php';
 
-$classLoaderSymfony = new \Doctrine\Common\ClassLoader('Symfony', __DIR__.'/vendor' );
-$classLoaderSymfony->register(); 
+// $classLoaderSymfony = new \Doctrine\Common\ClassLoader('Symfony', __DIR__.'/vendor' );
+// $classLoaderSymfony->register(); 
 
-$classLoaderDoctrineCommon = new \Doctrine\Common\ClassLoader('Doctrine\\Common', __DIR__.'/vendor/doctrine/common/lib' );
-$classLoaderDoctrineCommon->register(); 
+// $classLoaderDoctrineCommon = new \Doctrine\Common\ClassLoader('Doctrine\\Common', __DIR__.'/vendor/doctrine/common/lib' );
+// $classLoaderDoctrineCommon->register(); 
 
-$classLoaderDoctrineMigrations = new \Doctrine\Common\ClassLoader('Doctrine\\DBAL\\Migrations', __DIR__.'/vendor/doctrine/dbal/lib' );
-$classLoaderDoctrineMigrations->register(); 
+// $classLoaderDoctrineMigrations = new \Doctrine\Common\ClassLoader('Doctrine\\DBAL\\Migrations', __DIR__.'/vendor/doctrine/dbal/lib' );
+// $classLoaderDoctrineMigrations->register(); 
 
-$classLoaderDoctrineDbal = new \Doctrine\Common\ClassLoader('Doctrine\\DBAL', __DIR__.'/vendor/doctrine/dbal/lib' );
-$classLoaderDoctrineDbal->register(); 
+// $classLoaderDoctrineDbal = new \Doctrine\Common\ClassLoader('Doctrine\\DBAL', __DIR__.'/vendor/doctrine/dbal/lib' );
+// $classLoaderDoctrineDbal->register(); 
 
-$classLoaderDoctrine = new \Doctrine\Common\ClassLoader('Doctrine', __DIR__.'/vendor/doctrine/orm/lib' );
-$classLoaderDoctrine->register(); 
+// $classLoaderDoctrine = new \Doctrine\Common\ClassLoader('Doctrine', __DIR__.'/vendor/doctrine/orm/lib' );
+// $classLoaderDoctrine->register(); 
 
-$classLoaderJMS = new \Doctrine\Common\ClassLoader('JMS', __DIR__.'/vendor' );
-$classLoaderJMS->register(); 
+// $classLoaderJMS = new \Doctrine\Common\ClassLoader('JMS', __DIR__.'/vendor' );
+// $classLoaderJMS->register(); 
 
-$classLoaderDMS = new \Doctrine\Common\ClassLoader('DMS', __DIR__.'/vendor' );
-$classLoaderDMS->register(); 
+// $classLoaderDMS = new \Doctrine\Common\ClassLoader('DMS', __DIR__.'/vendor' );
+// $classLoaderDMS->register(); 
 
-$classLoaderMetadata = new \Doctrine\Common\ClassLoader('Metadata', __DIR__.'/vendor/Metadata/src' );
-$classLoaderMetadata->register(); 
+// $classLoaderMetadata = new \Doctrine\Common\ClassLoader('Metadata', __DIR__.'/vendor/Metadata/src' );
+// $classLoaderMetadata->register(); 
 
-$classLoaderLibrary = new \Doctrine\Common\ClassLoader('library', __DIR__ );
-$classLoaderLibrary->register(); 
+// $classLoaderMonolog = new \Doctrine\Common\ClassLoader('Monolog', __DIR__.'/vendor/monolog/src' );
+// $classLoaderMonolog->register(); 
 
-$classLoaderCoderockr = new \Doctrine\Common\ClassLoader('Coderockr', __DIR__.'/vendor' );
-$classLoaderCoderockr->register();
+// $classLoaderLibrary = new \Doctrine\Common\ClassLoader('library', __DIR__ );
+// $classLoaderLibrary->register(); 
 
-$classLoaderImageWorkshop = new \Doctrine\Common\ClassLoader('PHPImageWorkshop', __DIR__.'/vendor/ImageWorkshop/src' );
-$classLoaderImageWorkshop->register();
+// $classLoaderCoderockr = new \Doctrine\Common\ClassLoader('Coderockr', __DIR__.'/vendor' );
+// $classLoaderCoderockr->register();
+
+// $classLoaderImageWorkshop = new \Doctrine\Common\ClassLoader('PHPImageWorkshop', __DIR__.'/vendor/ImageWorkshop/src' );
+// $classLoaderImageWorkshop->register();
 
 $classLoaderModel = new \Doctrine\Common\ClassLoader('model', getenv('APPLICATION_PATH') . '/library' );
 $classLoaderModel->register(); 
@@ -101,7 +104,7 @@ $config->setProxyDir('/tmp');
 $config->setProxyNamespace('EntityProxy');
 $config->setAutoGenerateProxyClasses(true);
 $entityCache  = null;
-if ($useCache == 1) {
+if (isset($useCache) && $useCache == 1) {
     $entityCache = $cache;
 }
  
