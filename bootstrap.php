@@ -101,7 +101,7 @@ $config->setProxyDir('/tmp');
 $config->setProxyNamespace('EntityProxy');
 $config->setAutoGenerateProxyClasses(true);
 $entityCache  = null;
-if ($useCache == 1) {
+if (isset($useCache) && $useCache == 1) {
     $entityCache = $cache;
 }
  

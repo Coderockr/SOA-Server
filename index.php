@@ -78,7 +78,7 @@ $app->get('/{entity}/{filter}', function ($entity, $filter) use ($app, $em, $ent
         }
     }
     try {
-        $serializer = new service\Serializer();    
+        $serializer = new service\Serializer();
         $serializer->setGroups(array('entity', $entity));
         $entityName = 'model\\' .ucfirst($entity);
 
@@ -90,8 +90,13 @@ $app->get('/{entity}/{filter}', function ($entity, $filter) use ($app, $em, $ent
         if ($filter !== null) {
             parse_str($filter, $filter);
             foreach ($filter as $key => $value) {
-                $qb->andWhere($qb->expr()->eq("e.$key", ":$key"));
-                $qb->setParameter($key, $value);
+                //@TODO: Revisar esta condição para casos de o usuário precisar de valores iguais a zero
+                if ((int) $value === 0) {
+                    $qb->andWhere("e.{$key} IS NULL");
+                } else {
+                    $qb->andWhere($qb->expr()->eq("e.$key", ":$key"));
+                    $qb->setParameter($key, $value);
+                }
             }
         }
 
