@@ -19,6 +19,18 @@ if(!getenv('APPLICATION_ENV'))
 else
     $env = getenv('APPLICATION_ENV');
 
+//app configuration
+$app->register(new DoctrineServiceProvider(), array(
+    'db.options'  => $dbOptions
+));
+
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+    'monolog.logfile'       => getenv('APPLICATION_PATH'). DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'soa.log',
+));
+
+
 //Rest functions
 $app->get('/{entity}/{id}', function ($entity, $id) use ($em, $app, $entityCache) 
 {
