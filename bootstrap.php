@@ -1,6 +1,4 @@
 <?php
-//require_once __DIR__.'/vendor/autoload.php';
-
 $loader = require_once __DIR__.'/vendor/autoload.php';
 $loader->add('model', getenv('APPLICATION_PATH') . '/library');
 $loader->add('service', getenv('APPLICATION_PATH') . '/library');
