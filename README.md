@@ -27,7 +27,7 @@ Instalation
 Authorization
 -----------
 
-The service expects an value to Authorization in the request header. The Authorization header will be validated with configs/clients.php contents in client aplications. 
+The service expects an value to Authorization in the request header. The Authorization header will be validated with configs/clients.php contents in client applications. 
 
 How to access
 ------------
